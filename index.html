@@ -618,16 +618,19 @@
       navLinks.classList.contains('open') ? closeMenu() : openMenu();
     });
     navOverlay.addEventListener('click', closeMenu);
-    navLinks.querySelectorAll('a').forEach(function(a){
-      a.addEventListener('click', function(e){
+    navLinks.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click',function(e){
         var href=this.getAttribute('href');
-        if(!href.startsWith('#')){closeMenu();return;}
+        if(!href||!href.startsWith('#')){closeMenu();return;}
         e.preventDefault();
-        var target=document.querySelector(href);
+        var section=document.querySelector(href);
         closeMenu();
         setTimeout(function(){
-          if(target){target.scrollIntoView({behavior:'smooth',block:'start'});}
-        },250);
+          if(section){
+            var y=section.getBoundingClientRect().top+window.pageYOffset-80;
+            window.scrollTo({top:y,behavior:'smooth'});
+          }
+        },300);
       });
     });
   })();
